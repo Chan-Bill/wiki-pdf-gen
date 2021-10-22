@@ -1,0 +1,6 @@
+How to create new env in python?
+python3 -m venv .venv
+------------------------------------
+How to active the virt?
+source .venv/bin/activate
+------------------------------------
