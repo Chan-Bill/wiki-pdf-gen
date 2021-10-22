@@ -15,7 +15,7 @@ class CreatePDF:
         self.chr = chr
         self.f_size = f_size
 
-    def writePage(self, cell_w, cell_h, text, file_no, files_count):
+    def writePage(self, cell_h, title, con, file_no, files_count):
 
         filename = []
         for i in range(files_count + 1):
@@ -25,8 +25,11 @@ class CreatePDF:
             locals()[i] = FPDF(self.layout, self.unit, self.format)
             locals()[i].add_page()
             locals()[i].set_font(self.font, self.chr, self.f_size)
-            locals()[i].cell(cell_w, cell_h, text)
-            return locals()[i].output(f'generated/pdf_{file_no}.pdf')
+            locals()[i].cell(0, cell_h, title, ln=True, align='C')
+            locals()[i].cell(0, cell_h, 'Essay', ln=True, align='C')
+
+            locals()[i].multi_cell(0, cell_h, con, align='J', border=1)
+            return locals()[i].output(f'generated/English-{title}-Essay_{file_no + 1}.pdf')
 
 
 # pan = CreatePDF('P', 'mm', 'Letter', 'times', '', 16)

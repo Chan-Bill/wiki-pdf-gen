@@ -7,25 +7,27 @@ class WikiFetch:
 
     def __init__(self, keyword):
         self.keyword = keyword
+        self.fetched = []
 
     def getTitles(self):
-        self.titles = wikipedia.search(self.keyword)
-        print(self.titles)
+        return wikipedia.search(self.keyword)
 
     def getContent(self):
-        
-        for i in self.titles:
+
+        fetched = [ i.replace(' ','_')for i in self.getTitles()]
+        cont = []
+
+        for i in fetched:
+
             wiki_wiki = wikipediaapi.Wikipedia('en')
-
             page_py = wiki_wiki.page(i)
+            cont.append(page_py.summary[:1536])
+        
+        return cont
+        
 
-            if page_py.exists():
-                print(page_py.summary)
-            else:
-                pass
 
 
-# pan = WikiFetch(keyword='linux')
-
-# pan.getTitles()
-# pan.getContent()
+# pan = WikiFetch(keyword='Linux kernel')
+# print(pan.getTitles())
+# print(pan.getContent())
