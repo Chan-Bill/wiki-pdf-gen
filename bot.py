@@ -1,17 +1,28 @@
+import os
+import shutil
 import wikipediaapi
 from wiki import WikiFetch
 from wiki import Open_File
 from pdf import CreatePDF
 
+# Create folders
+if not os.path.exists('body'):
+    os.mkdir('body')
+
+if not os.path.exists('generated'):
+    os.mkdir('generated')
+
+
+# Welcome Page
 print('''
 **** PDF GENERATOR FOR COURSEHERO UNLOCK ****
 ****  Author : BillT BSME  Version: 1.0  ****
 ''')
 
+# Enter your topic of choice
 keyword = input('Enter Topic: ')
 
-# Wikipedia Scrape
-# Creating wikifetch object
+# Wikipedia Object
 crawler = WikiFetch(keyword)
 # Getting all the titles from the topic
 page_titles = crawler.getTitles()
@@ -25,7 +36,6 @@ for i in page_content:
     with Open_File(f'body/sample_{page_content.index(i)}.txt', 'w') as f:
         f.write(page_py.summary)
 
-
 # Pdf Generation
 for i in page_titles:
     # Creating createpdf object
@@ -38,6 +48,10 @@ for i in page_titles:
     locals()[i].print_chapter(f'body/sample_{page_titles.index(i)}.txt')
     # Generate PDF file
     locals()[i].output(f'generated/Eng-Essay_{i}.pdf')
+
+# Delete body files
+shutil.rmtree('body')
+
 
     
 
