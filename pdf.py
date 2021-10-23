@@ -7,7 +7,11 @@ class CreatePDF(FPDF):
         # Setting font: Times 12
         self.set_font("Times", size=12)
         # Printing centered text:
-        self.cell(0, 10, title, ln=True, align='C')
+        self.cell(0, 5, title, ln=True, align='C')
+        # Setting font: Times 12 for 'Essay'
+        self.set_font("Times", size=12)
+        # Printing centered text:
+        self.cell(0, 7, 'Essay', ln=True, align='C')
         # Performing a line break:
         self.ln()
 

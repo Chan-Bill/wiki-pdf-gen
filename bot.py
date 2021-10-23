@@ -5,12 +5,10 @@ from pdf import CreatePDF
 
 print('''
 **** PDF GENERATOR FOR COURSEHERO UNLOCK ****
-****         Author : BillT BSME         ****
+****  Author : BillT BSME  Version: 1.0  ****
 ''')
 
 keyword = input('Enter Topic: ')
-
-
 
 # Wikipedia Scrape
 # Creating wikifetch object
@@ -18,12 +16,13 @@ crawler = WikiFetch(keyword)
 # Getting all the titles from the topic
 page_titles = crawler.getTitles()
 # Generating all the contents each title
-for i in crawler.getContent():
+page_content = crawler.getContent()
+for i in page_content:
 
     wiki_wiki = wikipediaapi.Wikipedia('en')
     page_py = wiki_wiki.page(i)
     
-    with Open_File(f'body/sample_{i}.txt', 'w') as f:
+    with Open_File(f'body/sample_{page_content.index(i)}.txt', 'w') as f:
         f.write(page_py.summary)
 
 
@@ -36,9 +35,9 @@ for i in page_titles:
     # Printing the titles
     locals()[i].chapter_title(i)
     # Printing the body
-    locals()[i].print_chapter(f'body/sample_{i}.txt')
+    locals()[i].print_chapter(f'body/sample_{page_titles.index(i)}.txt')
     # Generate PDF file
-    locals()[i].output(f'generated/sample_{i}.pdf')
+    locals()[i].output(f'generated/Eng-Essay_{i}.pdf')
 
     
 
