@@ -16,11 +16,12 @@ class Open_File:
 
 
 class WikiFetch:
-    '''This will pass a 'keyword' that will going to search.
+    '''This will pass a 'keyword' that will be used to search.
     '''
 
-    def __init__(self, keyword):
+    def __init__(self, keyword, queries):
         self.keyword = keyword
+        self.queries = queries
 
     def getTitles(self):
         self.title = wikipedia.search(self.keyword)
