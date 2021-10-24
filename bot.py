@@ -1,12 +1,17 @@
 import os
+import requests
 import shutil
 import wikipediaapi
 from wiki import WikiFetch
 from wiki import Open_File
 from pdf import CreatePDF
 
+
 # Create folders
 if not os.path.exists('body'):
+    os.mkdir('body')
+else:
+    shutil.rmtree('body')
     os.mkdir('body')
 
 if not os.path.exists('generated'):
@@ -30,11 +35,17 @@ page_titles = crawler.getTitles()
 page_content = crawler.getContent()
 for i in page_content:
 
-    wiki_wiki = wikipediaapi.Wikipedia('en')
-    page_py = wiki_wiki.page(i)
-    
-    with Open_File(f'body/sample_{page_content.index(i)}.txt', 'w') as f:
-        f.write(page_py.summary)
+    try:
+        wiki_wiki = wikipediaapi.Wikipedia('en')
+        page_py = wiki_wiki.page(i)
+        
+        with Open_File(f'body/sample_{page_content.index(i)}.txt', 'w') as f:
+            f.write(page_py.summary)
+
+    except requests.exceptions.ConnectionError:
+        shutil.rmtree('body')
+        print('Something else went wrong')
+
 
 # Pdf Generation
 for i in page_titles:
@@ -51,6 +62,8 @@ for i in page_titles:
 
 # Delete body files
 shutil.rmtree('body')
+
+
 
 
     
