@@ -31,7 +31,6 @@ class WikiFetch:
         self.fetched = [i.replace(' ','_')for i in self.getTitles()]
         return self.fetched
 
+
 if __name__ == '__main__':
-    pan = WikiFetch(keyword='Linux kernel')
-    print(pan.getTitles())
-    pan.getContent()
+    pass
