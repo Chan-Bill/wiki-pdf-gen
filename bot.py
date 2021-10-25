@@ -28,12 +28,22 @@ def loadbar(iteration, total, prefix='', suffix='', decimals=1, length=100, fill
 	if iteration == total:
 		print()
 
+def error_message(message):
+    shutil.rmtree('body')
+    print(f'{message}')
+    input('Press ENTER to exit') 
+
+def closing_message(message):
+    print(f'Generated PDF files : {message}generated')
+    print('')
+    input('Press ENTER to exit')
+
 
 
 # Welcome Page
 print('''
-**** Random PDF Generator from Wikipedia ****
-****           Version: 1.2              ****
+********** Random PDF Generator from Wikipedia ************
+**********           Version: 1.2              ************
 
 Source Code: https://github.com/Christian-Bill/wiki-doc-gen
 ''')
@@ -45,7 +55,7 @@ query_count = int(input('Enter here: '))
 print('')
 
 
-if query_count > 50:
+if query_count > 50 and (isinstance(query_count,int) == True):
     print('Max = 50')
     query_count = int(input('Enter here: '))
     print('')
@@ -64,16 +74,19 @@ else:
         loadbar(0, count_titles, prefix=f'Generating {query_count} files:', suffix='Complete', length=count_titles)
         for i in page_content:
 
+            
+            wiki_wiki = wikipediaapi.Wikipedia('en')
+            page_py = wiki_wiki.page(i)
+
             try:
-                wiki_wiki = wikipediaapi.Wikipedia('en')
-                page_py = wiki_wiki.page(i)
-                
                 with Open_File(f'body/sample_{page_content.index(i)}.txt', 'w') as f:
                     f.write(page_py.summary)
 
             except requests.exceptions.ConnectionError:
-                shutil.rmtree('body')
-                print('Something else went wrong')
+                error_message('Something else went wrong')
+            
+            except UnicodeEncodeError:
+                error_message('Something else went wrong')
             
             sleep(0.1)
             loadbar(page_content.index(i) + 1, count_titles, prefix=f'Generating {query_count} files:', suffix='Complete', length=count_titles)
@@ -99,18 +112,12 @@ else:
         # Closing Message
         current_dir = os.getcwd()
         if platform.system() == 'Linux' or 'Darwin':
-            print(f'Generated PDF files : {current_dir}/generated')
-            print('')
-            input('Press ENTER to exit')
+            closing_message(current_dir + '/')
         else:
-            print(f'Generated PDF files : {current_dir}\generated')
-            print('')
-            input('Press ENTER to exit')        
+            closing_message(current_dir + '\ ')  
 
     except requests.exceptions.ConnectionError:
-        shutil.rmtree('body')
-        print('ConnectionError: Please check your network connection')
-        input('Press ENTER to exit')
+        error_message('ConnectionError: Please check your network connection')
 
 if __name__ == '__main__':
     pass
