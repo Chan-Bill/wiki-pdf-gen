@@ -34,5 +34,4 @@ class CreatePDF(FPDF):
 
 
 if __name__ == '__main__':
-    pan = CreatePDF('P', 'mm', 'Letter', 'times', '', 16)
-    pan.writePage(40, 10, 'hello world', 5, 6)
+    pass
