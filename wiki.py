@@ -24,13 +24,14 @@ class WikiFetch:
         self.queries = queries
 
     def getTitles(self):
-        self.title = wikipedia.search(self.keyword)
+        self.title = wikipedia.search(self.keyword, self.queries)
         return self.title
 
     def getContent(self):
         self.fetched = [i.replace(' ','_')for i in self.getTitles()]
         return self.fetched
 
-# pan = WikiFetch(keyword='Linux kernel')
-# print(pan.getTitles())
-# pan.getContent()
+if __name__ == '__main__':
+    pan = WikiFetch(keyword='Linux kernel')
+    print(pan.getTitles())
+    pan.getContent()
