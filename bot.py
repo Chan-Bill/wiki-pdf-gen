@@ -18,15 +18,21 @@ def loadbar(iteration, total, prefix='', suffix='', decimals=1, length=100, fill
 		print()
 
 # Handling Error
-def error_message(message):
-    shutil.rmtree('body')
+def error_message(message, enter):
+    # shutil.rmtree('body')
     print(f'{message}')
-    input('Press ENTER to exit') 
+    input(enter) 
 
 # Close Command
 def close():
     print('')
     input('Press ENTER to exit')
+
+# Clean Path
+def clean(s):
+    s = s.replace("\s", "\\s")
+    # s = s.replace("\n", "\\n")
+    return s
 
 # Create folders
 if not os.path.exists('body'):
@@ -84,14 +90,14 @@ try:
                 with Open_File(f'body/sample_{sample_body_name}.txt', 'w') as f:
                     f.write(page_py.summary)
             else:
-                with Open_File(f'body\sample_{sample_body_name}.txt', 'w') as f:
+                with Open_File(f'./body/sample_{sample_body_name}.txt', 'w') as f:
                     f.write(page_py.summary)
 
         except requests.exceptions.ConnectionError:
-            error_message('Something else went wrong')
+            error_message('Something else went wrong', "Press Enter to Exit")
         
         except UnicodeEncodeError:
-            error_message('Something else went wrong')
+            error_message('Something else went wrong', 'Press Enter to Refresh')
         
         sleep(0.1)
         loadbar(page_content.index(i) + 1, count_titles, prefix=f'Generating {query_count} files:', suffix='Complete', length=count_titles)
@@ -115,9 +121,9 @@ try:
             
         else:
             # Printing the body
-            locals()[i].print_chapter(f'body\sample_{txt_filename}.txt')
+            locals()[i].print_chapter(f'./body/sample_{txt_filename}.txt')
             # Generate PDF file
-            locals()[i].output(f'generated\Eng-Essay_{pdf_filename}.pdf')
+            locals()[i].output(f'./generated/Eng-Essay_{pdf_filename}.pdf')
 
     # Delete body files
     shutil.rmtree('body')
@@ -132,7 +138,7 @@ try:
         close()  
 
 except requests.exceptions.ConnectionError:
-    error_message('ConnectionError: Please check your network connection')
+    error_message('ConnectionError: Please check your network connection', 'Press Enter to exit')
 
 
 
