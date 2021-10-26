@@ -19,6 +19,9 @@ else:
 if not os.path.exists('generated'):
     os.mkdir('generated')
 
+# GNU/Linux or Mac OS
+unix = platform.system() == 'Linux' or platform.system() == 'Darwin'
+
 # Loadbar
 def loadbar(iteration, total, prefix='', suffix='', decimals=1, length=100, fill='>'):
 	percent = ('{0:.' + str(decimals) + 'f}').format(100 * (iteration/float(total)))
@@ -28,15 +31,22 @@ def loadbar(iteration, total, prefix='', suffix='', decimals=1, length=100, fill
 	if iteration == total:
 		print()
 
+# Handling Error
 def error_message(message):
     shutil.rmtree('body')
     print(f'{message}')
     input('Press ENTER to exit') 
 
+# Closing Message
 def closing_message(message):
     print(f'Generated PDF files : {message}generated')
     print('')
     input('Press ENTER to exit')
+
+# Write File
+def write_txt_file(slash, file_number):
+    with Open_File(f'body{slash}sample_{file_number}.txt', 'w') as f:
+                        f.write(page_py.summary)
 
 
 
@@ -78,9 +88,12 @@ else:
             wiki_wiki = wikipediaapi.Wikipedia('en')
             page_py = wiki_wiki.page(i)
 
+            sample_body_name = page_content.index(i)
             try:
-                with Open_File(f'body/sample_{page_content.index(i)}.txt', 'w') as f:
-                    f.write(page_py.summary)
+                if unix:
+                    write_txt_file('/', sample_body_name)
+                else:
+                    write_txt_file('\\', sample_body_name)
 
             except requests.exceptions.ConnectionError:
                 error_message('Something else went wrong')
@@ -101,20 +114,30 @@ else:
             locals()[i].add_page()
             # Printing the titles
             locals()[i].chapter_title(i)
-            # Printing the body
-            locals()[i].print_chapter(f'body/sample_{page_titles.index(i)}.txt')
-            # Generate PDF file
-            locals()[i].output(f'generated/Eng-Essay_{i}.pdf')
+
+            txt_filename = page_titles.index(i)
+            pdf_filename = i
+            if unix:
+                # Printing the body
+                locals()[i].print_chapter(f'body/sample_{page_titles.index(i)}.txt')
+                # Generate PDF file
+                locals()[i].output(f'generated/Eng-Essay_{i}.pdf')
+                
+            else:
+                # Printing the body
+                locals()[i].print_chapter(f'body\sample_{page_titles.index(i)}.txt')
+                # Generate PDF file
+                locals()[i].output(f'generated\Eng-Essay_{i}.pdf')
 
         # Delete body files
         shutil.rmtree('body')
 
         # Closing Message
         current_dir = os.getcwd()
-        if platform.system() == 'Linux' or 'Darwin':
+        if unix:
             closing_message(current_dir + '/')
         else:
-            closing_message(current_dir + '\ ')  
+            closing_message(current_dir + '\\')  
 
     except requests.exceptions.ConnectionError:
         error_message('ConnectionError: Please check your network connection')
