@@ -19,7 +19,6 @@ def loadbar(iteration, total, prefix='', suffix='', decimals=1, length=100, fill
 
 # Handling Error
 def error_message(message, enter):
-    # shutil.rmtree('body')
     print(f'{message}')
     input(enter) 
 
@@ -27,12 +26,6 @@ def error_message(message, enter):
 def close():
     print('')
     input('Press ENTER to exit')
-
-# Clean Path
-def clean(s):
-    s = s.replace("\s", "\\s")
-    # s = s.replace("\n", "\\n")
-    return s
 
 # Create folders
 if not os.path.exists('body'):
@@ -47,7 +40,6 @@ if not os.path.exists('generated'):
 # GNU/Linux or Mac OS
 unix = platform.system() == 'Linux' or platform.system() == 'Darwin'
 
-
 # Welcome Page
 print('''
 ********** Random PDF Generator from Wikipedia ************
@@ -55,7 +47,6 @@ print('''
 
 Source Code: https://github.com/Christian-Bill/wiki-doc-gen
 ''')
-
 
 # Enter your topic of choice
 keyword = input('Enter Topic: ')
@@ -83,8 +74,8 @@ try:
         
         wiki_wiki = wikipediaapi.Wikipedia('en')
         page_py = wiki_wiki.page(i)
-
         sample_body_name = page_content.index(i)
+
         try:
             if unix:
                 with Open_File(f'body/sample_{sample_body_name}.txt', 'w') as f:
@@ -113,6 +104,7 @@ try:
 
         txt_filename = page_titles.index(i)
         pdf_filename = i
+        
         if unix:
             # Printing the body
             locals()[i].print_chapter(f'body/sample_{txt_filename}.txt')
