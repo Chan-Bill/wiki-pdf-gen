@@ -54,7 +54,9 @@ try:
     page_content = crawler.getContent()
     # Summary iteration
     count_titles = len(page_content)
-    mets.loadbar(0, count_titles, prefix=f'Generating {query_count} files:', suffix='Complete', length=count_titles)
+    mets.loadbar(0, count_titles, prefix=f'Generating {query_count} files:',
+                 suffix='Complete', length=count_titles)
+                 
     for i in page_content:
         
         wiki_wiki = wikipediaapi.Wikipedia('en')
