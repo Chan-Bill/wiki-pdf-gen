@@ -1,31 +1,13 @@
 import os
 import shutil
-import platform
 import requests
+import platform
 import wikipediaapi
 from time import sleep
-from wiki import WikiFetch
-from wiki import Open_File
 from pdf import CreatePDF
-
-# Loadbar
-def loadbar(iteration, total, prefix='', suffix='', decimals=1, length=100, fill='>'):
-	percent = ('{0:.' + str(decimals) + 'f}').format(100 * (iteration/float(total)))
-	filledLength = int(length * iteration // total)
-	bar = fill * filledLength + '-' * (length - filledLength)
-	print(f'\r{prefix} |{bar}| {percent}% {suffix}', end='\r')
-	if iteration == total:
-		print()
-
-# Handling Error
-def error_message(message, enter):
-    print(f'{message}')
-    input(enter) 
-
-# Close Command
-def close():
-    print('')
-    input('Press ENTER to exit')
+from wiki import Open_File
+from wiki import WikiFetch
+from methods import Methods
 
 # Create folders
 if not os.path.exists('body'):
@@ -39,6 +21,9 @@ if not os.path.exists('generated'):
 
 # GNU/Linux or Mac OS
 unix = platform.system() == 'Linux' or platform.system() == 'Darwin'
+
+# Init methods
+mets = Methods()
 
 # Welcome Page
 print('''
@@ -69,7 +54,7 @@ try:
     page_content = crawler.getContent()
     # Summary iteration
     count_titles = len(page_content)
-    loadbar(0, count_titles, prefix=f'Generating {query_count} files:', suffix='Complete', length=count_titles)
+    mets.loadbar(0, count_titles, prefix=f'Generating {query_count} files:', suffix='Complete', length=count_titles)
     for i in page_content:
         
         wiki_wiki = wikipediaapi.Wikipedia('en')
@@ -85,13 +70,13 @@ try:
                     f.write(page_py.summary)
 
         except requests.exceptions.ConnectionError:
-            error_message('Something else went wrong', "Press Enter to Exit")
+            mets.error_message('Something else went wrong', "Press Enter to Exit")
         
         except UnicodeEncodeError:
-            error_message('Something else went wrong', 'Press Enter to Refresh')
+            mets.error_message('Something else went wrong', 'Press Enter to Refresh')
         
         sleep(0.1)
-        loadbar(page_content.index(i) + 1, count_titles, prefix=f'Generating {query_count} files:', suffix='Complete', length=count_titles)
+        mets.loadbar(page_content.index(i) + 1, count_titles, prefix=f'Generating {query_count} files:', suffix='Complete', length=count_titles)
 
     # Pdf Generation
     for i in page_titles:
@@ -124,13 +109,13 @@ try:
     current_dir = os.getcwd()
     if unix:
         print(f'Generated PDF files : {current_dir}/generated')
-        close()
+        mets.close()
     else:
         print(f'Generated PDF files : {current_dir}\generated')
-        close()  
+        mets.close()  
 
 except requests.exceptions.ConnectionError:
-    error_message('ConnectionError: Please check your network connection', 'Press Enter to exit')
+    mets.error_message('ConnectionError: Please check your network connection', 'Press Enter to exit')
 
 
 
