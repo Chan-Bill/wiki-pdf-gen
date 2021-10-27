@@ -4,10 +4,10 @@ import requests
 import platform
 import wikipediaapi
 from time import sleep
-from pdf import CreatePDF
-from wiki import Open_File
-from wiki import WikiFetch
-from methods import Methods
+from Scripts.pdf import CreatePDF
+from Scripts.wiki import Open_File
+from Scripts.wiki import WikiFetch
+from Scripts.methods import Methods
 
 # Create folders
 if not os.path.exists('body'):
