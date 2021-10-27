@@ -30,7 +30,7 @@ print('''
 ********** Random PDF Generator from Wikipedia ************
 **********           Version: 1.2              ************
 
-Source Code: https://github.com/Christian-Bill/wiki-doc-gen
+Source Code: https://github.com/Christian-Bill/wiki-pdf-gen
 ''')
 
 # Enter your topic of choice
