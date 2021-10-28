@@ -28,7 +28,7 @@ mets = Methods()
 # Welcome Page
 print('''
 ********** Random PDF Generator from Wikipedia ************
-**********           Version: 1.2              ************
+**********           Version: 1.3              ************
 
 Source Code: https://github.com/Christian-Bill/wiki-pdf-gen
 ''')
@@ -110,7 +110,8 @@ try:
     # Create zip file with unique filename 
     filename = "doc"
     n = 0
-    while os.path.exists(f"{filename}-{n}.zip"):
+    output_path = f'{filename}-{n}.zip'
+    while os.path.exists(output_path):
         i += 1
     shutil.make_archive(f'{filename}-{n}', 'zip', 'generated')
     shutil.rmtree('generated')
@@ -118,10 +119,10 @@ try:
     # Closing Message
     current_dir = os.getcwd()
     if unix:
-        print(f'Generated PDF files : {current_dir}/{filename}-{n}.zip')
+        print(f'Generated PDF files : {current_dir}/{output_path}')
         mets.close()
     else:
-        print(f'Generated PDF files : {current_dir}\{filename}-{n}.zip')
+        print(f'Generated PDF files : {current_dir}\{output_path}')
         mets.close()
         
 except requests.exceptions.ConnectionError:
