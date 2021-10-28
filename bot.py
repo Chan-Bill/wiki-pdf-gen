@@ -72,13 +72,17 @@ try:
                     f.write(page_py.summary)
 
         except requests.exceptions.ConnectionError:
-            mets.error_message('Something else went wrong', "Press Enter to Exit")
+            mets.error_message('Something else went wrong', 
+                                "Press Enter to Exit")
         
         except UnicodeEncodeError:
-            mets.error_message('Something else went wrong', 'Press Enter to Refresh')
+            mets.error_message('Something else went wrong', 
+                                'Press Enter to Refresh')
         
         sleep(0.1)
-        mets.loadbar(page_content.index(i) + 1, count_titles, prefix=f'Generating {query_count} files:', suffix='Complete', length=count_titles)
+        mets.loadbar(page_content.index(i) + 1, 
+                    count_titles, prefix=f'Generating {query_count} files:', 
+                    suffix='Complete', length=count_titles)
 
     # Pdf Generation
     for i in page_titles:
@@ -126,7 +130,8 @@ try:
         mets.close()
         
 except requests.exceptions.ConnectionError:
-    mets.error_message('ConnectionError: Please check your network connection', 'Press Enter to exit')
+    mets.error_message('ConnectionError: Please check your network connection', 
+                        'Press Enter to exit')
 
 
 
