@@ -109,19 +109,19 @@ try:
     
     # Create zip file with unique filename 
     filename = "doc"
-    i = 0
-    while os.path.exists(f"{filename}-{i}.zip"):
+    n = 0
+    while os.path.exists(f"{filename}-{n}.zip"):
         i += 1
-    shutil.make_archive(f'{filename}-{i}', 'zip', 'generated')
+    shutil.make_archive(f'{filename}-{n}', 'zip', 'generated')
     shutil.rmtree('generated')
 
     # Closing Message
     current_dir = os.getcwd()
     if unix:
-        print(f'Generated PDF files : {current_dir}/generated')
+        print(f'Generated PDF files : {current_dir}/{filename}-{n}.zip')
         mets.close()
     else:
-        print(f'Generated PDF files : {current_dir}\generated')
+        print(f'Generated PDF files : {current_dir}\{filename}-{n}.zip')
         mets.close()
         
 except requests.exceptions.ConnectionError:
