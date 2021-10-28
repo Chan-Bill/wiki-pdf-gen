@@ -106,6 +106,14 @@ try:
 
     # Delete body files
     shutil.rmtree('body')
+    
+    # Create zip file with unique filename 
+    filename = "doc"
+    i = 0
+    while os.path.exists(f"{filename}-{i}.zip"):
+        i += 1
+    shutil.make_archive(f'{filename}-{i}', 'zip', 'generated')
+    shutil.rmtree('generated')
 
     # Closing Message
     current_dir = os.getcwd()
@@ -114,8 +122,8 @@ try:
         mets.close()
     else:
         print(f'Generated PDF files : {current_dir}\generated')
-        mets.close()  
-
+        mets.close()
+        
 except requests.exceptions.ConnectionError:
     mets.error_message('ConnectionError: Please check your network connection', 'Press Enter to exit')
 
