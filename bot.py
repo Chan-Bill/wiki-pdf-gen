@@ -43,7 +43,7 @@ while True:
         print('')
         break
     except ValueError:
-        print('ValueError: Type a number not a letter')     
+        print('ValueError: Type a number')     
 
 try:
     # Wikipedia Object
