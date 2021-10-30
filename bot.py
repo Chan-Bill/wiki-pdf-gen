@@ -113,11 +113,13 @@ try:
     
     # Create zip file with unique filename 
     filename = "doc"
-    n = 0
-    output_path = f'{filename}-{n}.zip'
+    num = 0
+    output_path = f'{filename}-{num}.zip'
     while os.path.exists(output_path):
-        i += 1
-    shutil.make_archive(f'{filename}-{n}', 'zip', 'generated')
+        num += 1
+        output_path = f'{filename}-{num}.zip'
+
+    shutil.make_archive(f'{filename}-{num}', 'zip', 'generated')
     shutil.rmtree('generated')
 
     # Closing Message
@@ -132,6 +134,9 @@ try:
 except requests.exceptions.ConnectionError:
     mets.error_message('ConnectionError: Please check your network connection', 
                         'Press Enter to exit')
+
+except ZeroDivisionError:
+    mets.error_message('No search results', 'Press Enter to exit')
 
 
 
