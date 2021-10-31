@@ -6,9 +6,8 @@ import wikipediaapi
 from tqdm import tqdm
 from time import sleep
 from Scripts.pdf import CreatePDF
-from Scripts.wiki import Open_File
-from Scripts.wiki import WikiFetch
 from Scripts.methods import Methods
+from Scripts.wiki import Open_File, WikiFetch
 
 # Create folders
 if not os.path.exists('body'):
