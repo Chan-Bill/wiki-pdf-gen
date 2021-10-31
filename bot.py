@@ -55,8 +55,6 @@ try:
     page_content = crawler.getContent()
     # Summary iteration
     count_titles = len(page_content)
-    # mets.loadbar(0, count_titles, prefix=f'Generating {query_count} files:',
-                #  suffix='Complete', length=count_titles)
                  
     for i in tqdm(page_content):
         
@@ -80,10 +78,7 @@ try:
             mets.error_message('Something else went wrong', 
                                 'Press Enter to Refresh')
         
-        # sleep(0.1)
-        # mets.loadbar(page_content.index(i) + 1, 
-        #             count_titles, prefix=f'Generating {query_count} files:', 
-        #             suffix='Complete', length=count_titles)
+        sleep(0.1)
 
     # Pdf Generation
     for i in page_titles:
