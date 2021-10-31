@@ -3,6 +3,7 @@ import shutil
 import requests
 import platform
 import wikipediaapi
+from tqdm import tqdm
 from time import sleep
 from Scripts.pdf import CreatePDF
 from Scripts.wiki import Open_File
@@ -54,10 +55,10 @@ try:
     page_content = crawler.getContent()
     # Summary iteration
     count_titles = len(page_content)
-    mets.loadbar(0, count_titles, prefix=f'Generating {query_count} files:',
-                 suffix='Complete', length=count_titles)
+    # mets.loadbar(0, count_titles, prefix=f'Generating {query_count} files:',
+                #  suffix='Complete', length=count_titles)
                  
-    for i in page_content:
+    for i in tqdm(page_content):
         
         wiki_wiki = wikipediaapi.Wikipedia('en')
         page_py = wiki_wiki.page(i)
@@ -79,10 +80,10 @@ try:
             mets.error_message('Something else went wrong', 
                                 'Press Enter to Refresh')
         
-        sleep(0.1)
-        mets.loadbar(page_content.index(i) + 1, 
-                    count_titles, prefix=f'Generating {query_count} files:', 
-                    suffix='Complete', length=count_titles)
+        # sleep(0.1)
+        # mets.loadbar(page_content.index(i) + 1, 
+        #             count_titles, prefix=f'Generating {query_count} files:', 
+        #             suffix='Complete', length=count_titles)
 
     # Pdf Generation
     for i in page_titles:
@@ -128,7 +129,7 @@ try:
         print(f'Generated PDF files : {current_dir}/{output_path}')
         mets.close()
     else:
-        print(f'Generated PDF files : {current_dir}\{output_path}')
+        print(f'Generated PDF files : {current_dir}\\{output_path}')
         mets.close()
         
 except requests.exceptions.ConnectionError:
