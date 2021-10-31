@@ -130,9 +130,6 @@ except requests.exceptions.ConnectionError:
     mets.error_message('ConnectionError: Please check your network connection', 
                         'Press Enter to exit')
 
-except ZeroDivisionError:
-    mets.error_message('No search results', 'Press Enter to exit')
-
 
 
 
