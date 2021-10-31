@@ -52,9 +52,7 @@ try:
     page_titles = crawler.getTitles()
     # Generating all the contents each title
     page_content = crawler.getContent()
-    # Summary iteration
-    count_titles = len(page_content)
-                 
+    # Summary iteration                 
     for i in tqdm(page_content):
         
         wiki_wiki = wikipediaapi.Wikipedia('en')
@@ -69,10 +67,6 @@ try:
                 with Open_File(f'./body/sample_{sample_body_name}.txt', 'w') as f:
                     f.write(page_py.summary)
 
-        except requests.exceptions.ConnectionError:
-            mets.error_message('Something else went wrong', 
-                                "Press Enter to Exit")
-        
         except UnicodeEncodeError:
             mets.error_message('Something else went wrong', 
                                 'Press Enter to Refresh')
