@@ -1,128 +1,55 @@
-import os
-import shutil
 import requests
-import platform
-import wikipediaapi
-from tqdm import tqdm
-from time import sleep
-from Scripts.pdf import CreatePDF
-from Scripts.methods import Methods
-from Scripts.wiki import Open_File, WikiFetch
+from folders import Folders
+from pdf import CreatePDF, PdfGeneration
+from welcome_closing import WelcomePage, Closing
+from wiki import Open_File, WikiFetch, TxtGeneration
 
-# Create folders
-if not os.path.exists('body'):
-    os.mkdir('body')
-else:
-    shutil.rmtree('body')
-    os.mkdir('body')
 
-if not os.path.exists('generated'):
-    os.mkdir('generated')
+class RunApp:
 
-# GNU/Linux or Mac OS
-unix = platform.system() == 'Linux' or platform.system() == 'Darwin'
+    def __init__(self):
 
-# Init methods
-mets = Methods()
+        Folders()
+        self.keyword, self.query_count = self.init_page()
+        self.crawler = WikiFetch(self.keyword, self.query_count)
+        self.create_body_file()
+        self.create_pdf_file()
+        self.try_wiki_doc_gen()
 
-# Welcome Page
-print('''
-********** Random PDF Generator from Wikipedia ************
-**********           Version: 1.3              ************
+    def init_page(self):
+        welcome = WelcomePage()
+        keyword = welcome.ask_keyword()
+        query_count = welcome.validate_query()
+        return [keyword, query_count]   
 
-Source Code: https://github.com/Christian-Bill/wiki-pdf-gen
-''')
-
-# Enter your topic of choice
-keyword = input('Enter Topic: ')
-print('How many files?')
-
-while True:
-    try:
-        query_count = int(input('Enter here: '))
-        print('')
-        break
-    except ValueError:
-        print('ValueError: Type a number')     
-
-try:
-    # Wikipedia Object
-    crawler = WikiFetch(keyword, query_count)
-    # Getting all the titles from the topic
-    page_titles = crawler.getTitles()
-    # Generating all the contents each title
-    page_content = crawler.getContent()
-    # Summary iteration                 
-    for i in tqdm(page_content):
-        
-        wiki_wiki = wikipediaapi.Wikipedia('en')
-        page_py = wiki_wiki.page(i)
-        sample_body_name = page_content.index(i)
-
+    def try_wiki_doc_gen(self):
         try:
-            if unix:
-                with Open_File(f'body/sample_{sample_body_name}.txt', 'w') as f:
-                    f.write(page_py.summary)
-            else:
-                with Open_File(f'./body/sample_{sample_body_name}.txt', 'w') as f:
-                    f.write(page_py.summary)
+            self.wiki_doc_gen()
+        except requests.exceptions.ConnectionError:
+            error_message('ConnectionError: Please check your network connection', 'Press Enter to exit')
 
-        except UnicodeEncodeError:
-            mets.error_message('Something else went wrong', 
-                                'Press Enter to Refresh')
-        
-        sleep(0.1)
+    def wiki_doc_gen(self):
+        self.create_body_file()  
+        self.create_pdf_file()
+        Closing()
 
-    # Pdf Generation
-    for i in page_titles:
-        # Creating createpdf object
-        locals()[i] = CreatePDF()
-        # Add page before writing
-        locals()[i].add_page()
-        # Printing the titles
-        locals()[i].chapter_title(i)
+    def create_body_file(self):
+        all_articles = self.crawler.available_articles()      
+        TxtGeneration(all_articles)
 
-        txt_filename = page_titles.index(i)
-        pdf_filename = i
-        
-        if unix:
-            # Printing the body
-            locals()[i].print_chapter(f'body/sample_{txt_filename}.txt')
-            # Generate PDF file
-            locals()[i].output(f'generated/Eng-Essay_{pdf_filename}.pdf')
-            
-        else:
-            # Printing the body
-            locals()[i].print_chapter(f'./body/sample_{txt_filename}.txt')
-            # Generate PDF file
-            locals()[i].output(f'./generated/Eng-Essay_{pdf_filename}.pdf')
+    def create_pdf_file(self):
+        page_titles = self.crawler.find_articles()
+        PdfGeneration(page_titles)
 
-    # Delete body files
-    shutil.rmtree('body')
+
+if __name__ == '__main__':
+    # keyword = 'war'
+    # query_count = 2
+    RunApp()
+
+
+
     
-    # Create zip file with unique filename 
-    filename = "doc"
-    num = 0
-    output_path = f'{filename}-{num}.zip'
-    while os.path.exists(output_path):
-        num += 1
-        output_path = f'{filename}-{num}.zip'
-
-    shutil.make_archive(f'{filename}-{num}', 'zip', 'generated')
-    shutil.rmtree('generated')
-
-    # Closing Message
-    current_dir = os.getcwd()
-    if unix:
-        print(f'Generated PDF files : {current_dir}/{output_path}')
-        mets.close()
-    else:
-        print(f'Generated PDF files : {current_dir}\\{output_path}')
-        mets.close()
-        
-except requests.exceptions.ConnectionError:
-    mets.error_message('ConnectionError: Please check your network connection', 
-                        'Press Enter to exit')
 
 
 
