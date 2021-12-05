@@ -1,4 +1,3 @@
-
 import requests
 import wikipedia
 from control.file_export import Export
@@ -13,12 +12,15 @@ class Controls:
         self.keyword = keyword
         self.query_count = query_count
 
-        self.try_wiki_doc_gen()
+        self.generate_file_and_export()
 
-    def try_wiki_doc_gen(self):
+    def generate_file_and_export(self):
+        self.try_generate_file()
+        Export()
+
+    def try_generate_file(self):
         try:
             self.write_pages()
-            Export()
         except requests.exceptions.ConnectionError:
             self.error_message('ConnectionError: Please check your network connection', 'Press Enter to exit')
 
