@@ -67,7 +67,3 @@ class PdfGeneration:
         locals()[self.title].chapter_title(self.title)
         locals()[self.title].print_chapter(f'./body/sample_{self.txt_filename}.txt')
         locals()[self.title].output(f'./generated/Eng-Essay_{self.pdf_filename}.pdf')
-
-
-if __name__ == '__main__':
-    pass

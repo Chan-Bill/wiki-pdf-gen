@@ -6,12 +6,13 @@ class Export:
 
     def __init__(self):
 
-        # self.default_file_and_path()
+        self.default_file_and_path()
+        self.zipping_process()       
+
+    def default_file_and_path(self):
         self.filename = 'doc'
         self.number = 1
         self.output_name = ''
-
-        self.zipping_process()        
 
     def zipping_process(self):
         self.create_unique_filename()
