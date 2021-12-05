@@ -46,28 +46,27 @@ class PdfGeneration:
         
         self.page_titles = page_titles
     
-        self.proceed_pdf_gen(page_titles)
+        self.proceed_pdf_gen()
 
-    def proceed_pdf_gen(self, page_titles):
-        for title in page_titles:
-            self.generating_pdf(title, page_titles)
+    def proceed_pdf_gen(self):
+        for self.title in self.page_titles:
+            self.generating_pdf()
         shutil.rmtree('body')
 
-    def generating_pdf(self, title, page_titles):
-        txt_filename, pdf_filename = self.create_filenames(title, page_titles)
-        self.pdf_final_path(title, txt_filename, pdf_filename)
+    def generating_pdf(self):
+        self.create_filenames()
+        self.pdf_final_path()
 
-    def create_filenames(self, title, page_titles):
-        txt_filename = page_titles.index(title)
-        pdf_filename = title
-        return [txt_filename, pdf_filename]
+    def create_filenames(self):
+        self.txt_filename = self.page_titles.index(self.title)
+        self.pdf_filename = self.title
 
-    def pdf_final_path(self, title, txt_filename, pdf_filename):
-        locals()[title] = CreatePDF()
-        locals()[title].add_page()
-        locals()[title].chapter_title(title)
-        locals()[title].print_chapter(f'./body/sample_{txt_filename}.txt')
-        locals()[title].output(f'./generated/Eng-Essay_{pdf_filename}.pdf')
+    def pdf_final_path(self):
+        locals()[self.title] = CreatePDF()
+        locals()[self.title].add_page()
+        locals()[self.title].chapter_title(self.title)
+        locals()[self.title].print_chapter(f'./body/sample_{self.txt_filename}.txt')
+        locals()[self.title].output(f'./generated/Eng-Essay_{self.pdf_filename}.pdf')
 
 
 if __name__ == '__main__':
