@@ -8,8 +8,8 @@ class Export:
 
         # self.default_file_and_path()
         self.filename = 'doc'
-        self.number = 0
-        self.output_path = ''
+        self.number = 1
+        self.output_name = ''
 
         self.zipping_process()        
 
@@ -21,19 +21,18 @@ class Export:
     def create_unique_filename(self):
         while os.path.exists(f'{self.filename}-{self.number}.zip'):
             self.calculate_unique_name()
-            break
 
     def calculate_unique_name(self):
-        self.final_number = (self.number + 1)
-        self.output_path = f'{self.filename}-{self.final_number}.zip'
+        self.number += 1
+        self.output_name = f'{self.filename}-{self.number}.zip'
 
     def zip_folders(self):
-        shutil.make_archive(f'{self.filename}-{self.final_number}', 'zip', 'generated')
+        shutil.make_archive(f'{self.filename}-{self.number}', 'zip', 'generated')
         shutil.rmtree('generated')
 
     def show_path(self):
         current_dir = os.getcwd()
-        print(f'Generated PDF files : {current_dir}/{self.output_path}')
+        print(f'Generated PDF files : {current_dir}/{self.output_name}')
         self.close()
 
     def close(self):
