@@ -1,6 +1,5 @@
 import os
 import shutil
-from model.file_folders import Folders
 
 class View:
     
