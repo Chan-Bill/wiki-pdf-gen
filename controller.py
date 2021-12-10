@@ -15,12 +15,12 @@ class Controller:
         self.view.main()
         self.file_creation()
 
+    def init_temp_folders(self):
+        Folders()
+
     def file_creation(self):
         self.model.all_inputs(self.view.keyword, self.view.query_count)
         self.model.generate_file_and_export()
-
-    def init_temp_folders(self):
-        Folders()
 
 
 if __name__ == '__main__':
