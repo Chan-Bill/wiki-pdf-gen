@@ -6,7 +6,7 @@ Python app that scrapes summary of Wikipedia articles based on the topic you inp
 - How to use the app?
   1. [Manually Building](#build)
   2. [Using Executable](#using-executable)
-  3. [Issues](#issues)
+- [Issues](#issues)
 
 ## Requirements
 
