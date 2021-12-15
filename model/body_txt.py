@@ -30,15 +30,14 @@ class TxtGeneration:
             self.write_to_txt()
 
     def write_to_txt(self):
-        self.page, self.txt_filename =  self.search_contents()
+        self.search_contents()
         self.try_to_encode_txt()
         sleep(0.1)
 
     def search_contents(self):
         wiki_wiki = wikipediaapi.Wikipedia('en')
-        page = wiki_wiki.page(self.article)
-        txt_filename = self.all_articles.index(self.article)
-        return [page, txt_filename]
+        self.page = wiki_wiki.page(self.article)
+        self.txt_filename = self.all_articles.index(self.article)
 
     def try_to_encode_txt(self):
         try:
