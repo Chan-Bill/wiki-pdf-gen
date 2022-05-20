@@ -1,3 +1,4 @@
+import random
 import requests
 import wikipedia
 from model.file_export import Export
@@ -35,16 +36,17 @@ class Models:
         self._create_pdf_file()
 
     def _create_body_file(self):
-        self._available_articles()      
-        TxtGeneration(self.fetched)
+        TxtGeneration(self._available_articles())
 
     def _available_articles(self):
-        self.fetched = [i.replace(' ','_')for i in self._find_articles()]
+        fetched = [i.replace(' ','_')for i in self._find_articles()]
+        return fetched
 
     def _find_articles(self):
-        self.titles = wikipedia.search(self.keyword, results=self.query_count)
-        return self.titles
+        titles = wikipedia.search(self.keyword, results=1000000)
+        rand_titles = random.sample(titles, self.query_count)
+        return rand_titles
 
     def _create_pdf_file(self):
         self._find_articles()
-        PdfGeneration(self.titles)
+        PdfGeneration(self._find_articles())

@@ -25,4 +25,7 @@ class Controller:
 
 if __name__ == '__main__':
     wiki_gen = Controller()
-    wiki_gen.main()
+    try:
+        wiki_gen.main()
+    except:
+        pass
